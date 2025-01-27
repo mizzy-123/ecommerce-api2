@@ -1,0 +1,17 @@
+
+
+yarn check-lint || {
+    echo 'ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.';
+}
+
+yarn check-types || {
+    echo 'Are you seriously trying to write that? Make the changes required above.';
+    false;
+}
+
+yarn build || {
+    echo 'Your project cannot build idiot, please fix it';
+    false;
+}
+
+echo 'Yeah congratulations, your file accepted';
