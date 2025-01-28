@@ -6,7 +6,8 @@ export const notFoundMiddleware = (
     next: NextFunction
 ) => {
     res.status(404).json({
-        error: "Not found"
+        code: 404,
+        message: "Not found"
     });
 
     next();

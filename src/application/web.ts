@@ -6,6 +6,8 @@ import { notFoundMiddleware } from "../middleware/notfound.middleware";
 
 export const web = express();
 
+web.use("/public", express.static("./public"));
+
 web.use(
     cors({
         origin: true,
