@@ -1,6 +1,7 @@
 import { logger } from "./application/logging";
 import { web } from "./application/web";
 import { AppDataSource } from "./data-source";
+import "dotenv/config";
 
 AppDataSource.initialize()
     .then(() => {

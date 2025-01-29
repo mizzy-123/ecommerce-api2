@@ -6,10 +6,12 @@ import {
     PrimaryGeneratedColumn,
     OneToMany,
     ManyToMany,
-    JoinTable
+    JoinTable,
+    BeforeInsert
 } from "typeorm";
 import { Address } from "./Address";
 import { Role } from "./Role";
+import { Slug } from "../../util/slug";
 
 export enum Gender {
     LAKI = "laki",
@@ -50,7 +52,8 @@ export class User {
     @Column({
         type: "varchar",
         length: 100,
-        nullable: true
+        nullable: true,
+        unique: true
     })
     phone: string;
 
@@ -74,6 +77,12 @@ export class User {
     })
     email_verified_at: Date;
 
+    @Column({ type: "timestamp", nullable: true })
+    verificationTokenExpires: Date | null;
+
+    @Column({ nullable: true })
+    verificationToken: string | null;
+
     @CreateDateColumn({ type: "timestamp" })
     created_at: Date;
 
@@ -86,4 +95,13 @@ export class User {
     @ManyToMany(() => Role, (role) => role.users)
     @JoinTable()
     roles: Role[];
+
+    @BeforeInsert()
+    generateSlug() {
+        if (this.fullname) {
+            return Slug.createUsernameEntityUser(this.fullname).then((slug) => {
+                this.username = slug;
+            });
+        }
+    }
 }

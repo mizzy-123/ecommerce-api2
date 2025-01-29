@@ -1,5 +1,7 @@
+import { addHours } from "date-fns";
 import { AppDataSource } from "../data-source";
-import { User } from "../entity/User";
+import { Role } from "../database/entity/Role";
+import { User } from "../database/entity/User";
 import {
     CreateUserRequest,
     toUserResponse,
@@ -8,6 +10,9 @@ import {
 import { UserValidation } from "../validation/user.validation";
 import { Validation } from "../validation/validation";
 import bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
+import { Email } from "../util/email";
+import { ResponseError } from "../error/response.error";
 
 export class UserService {
     static async register(request: CreateUserRequest): Promise<UserResponse> {
@@ -16,22 +21,83 @@ export class UserService {
             request
         );
 
+        const verificationToken = uuidv4();
+        const verificationTokenExpires = addHours(new Date(), 24);
+        const buyer_id = parseInt(process.env.BUYER_ID!);
+
         registerRequest.password = await bcrypt.hash(
             registerRequest.password,
             10
         );
 
         const userRepository = AppDataSource.getRepository(User);
+        const roleRepository = AppDataSource.getRepository(Role);
+        const buyer = await roleRepository.findOneBy({ id: buyer_id });
 
         const newUser = userRepository.create({
             email: registerRequest.email,
             fullname: registerRequest.fullname,
             phone: registerRequest.phone,
-            password: registerRequest.password
+            password: registerRequest.password,
+            verificationToken: verificationToken,
+            verificationTokenExpires: verificationTokenExpires,
+            roles: [buyer!]
         });
 
         const savedUser = await userRepository.save(newUser);
 
+        Email.sendVerificationEmail(
+            savedUser.email,
+            savedUser.verificationToken!
+        );
+
         return toUserResponse(savedUser);
+    }
+
+    static async verifyEmail(token: string | null | undefined) {
+        if (!token) throw new ResponseError(400, "Invalid or missing token");
+
+        const userRepository = AppDataSource.getRepository(User);
+        const user = await userRepository.findOneBy({
+            verificationToken: token
+        });
+
+        if (!user)
+            throw new ResponseError(400, "Invalid token or user not found");
+
+        if (
+            user.verificationTokenExpires &&
+            new Date() > user.verificationTokenExpires
+        ) {
+            throw new ResponseError(
+                400,
+                "Token expired, please request a new verification email"
+            );
+        }
+
+        user.email_verified_at = new Date();
+        user.verificationToken = null;
+        user.verificationTokenExpires = null;
+        await userRepository.save(user);
+    }
+
+    static async resendVerificationEmail(email: string | null | undefined) {
+        if (!email) throw new ResponseError(400, "Invalid or missing email");
+
+        const userRepository = AppDataSource.getRepository(User);
+        const user = await userRepository.findOneBy({
+            email: email
+        });
+
+        if (!user) throw new ResponseError(400, "User not found");
+
+        const verificationToken = uuidv4();
+        const verificationTokenExpires = addHours(new Date(), 24);
+
+        user.verificationToken = verificationToken;
+        user.verificationTokenExpires = verificationTokenExpires;
+        await userRepository.save(user);
+
+        Email.sendVerificationEmail(user.email, user.verificationToken);
     }
 }

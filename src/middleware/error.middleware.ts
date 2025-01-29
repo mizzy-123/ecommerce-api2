@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import { ResponseError } from "../error/response.error";
 import multer from "multer";
+import { logger } from "../application/logging";
 
 export const errorMiddleware = async (
     error: Error,
@@ -21,7 +22,7 @@ export const errorMiddleware = async (
             combinedErrors[field].push(err.message);
 
             if (!firstMessage) {
-                firstMessage = err.message;
+                firstMessage = `${field} ${err.message}`;
             }
         });
     }
@@ -76,12 +77,15 @@ export const errorMiddleware = async (
             message: error.message
         });
 
+        logger.error(error.message);
         return;
     } else {
         res.status(500).json({
             code: 500,
-            message: error.message
+            message: "Something wrong"
         });
+
+        logger.error(error.message);
         return;
     }
 

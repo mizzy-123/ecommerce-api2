@@ -5,3 +5,5 @@ export const publicRouter = Router();
 
 publicRouter.post("/login");
 publicRouter.post("/register", UserController.register);
+publicRouter.get("/verify-email");
+publicRouter.post("/resend-verification");
