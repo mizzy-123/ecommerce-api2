@@ -27,7 +27,7 @@ export class Email {
     static sendVerificationEmail(email: string, code: string) {
         const verificationLink = `${
             process.env.APP_URL
-        }/verify-email?token=${encodeURIComponent(code)}`;
+        }/api/verify-email?token=${encodeURIComponent(code)}`;
         ejs.renderFile(
             path.join(__dirname, "../view/mail/verification.mail.ejs"),
             { code: verificationLink },

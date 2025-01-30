@@ -4,8 +4,12 @@ import { Role } from "../database/entity/Role";
 import { User } from "../database/entity/User";
 import {
     CreateUserRequest,
+    LoginRequest,
+    toLoginResponse,
     toUserResponse,
-    UserResponse
+    toUserResponseWithToken,
+    UserResponse,
+    UserResponseWithToken
 } from "../model/user.model";
 import { UserValidation } from "../validation/user.validation";
 import { Validation } from "../validation/validation";
@@ -13,6 +17,7 @@ import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { Email } from "../util/email";
 import { ResponseError } from "../error/response.error";
+import { generateAccessToken, generateRefreshToken } from "../util/jwt";
 
 export class UserService {
     static async register(request: CreateUserRequest): Promise<UserResponse> {
@@ -52,6 +57,41 @@ export class UserService {
         );
 
         return toUserResponse(savedUser);
+    }
+
+    static async login(request: LoginRequest): Promise<UserResponseWithToken> {
+        const loginRequest = Validation.validate(UserValidation.LOGIN, request);
+
+        const userRepository = AppDataSource.getRepository(User);
+        const user = await userRepository.findOne({
+            where: {
+                email: loginRequest.email
+            },
+            relations: {
+                roles: true
+            }
+        });
+
+        if (!user)
+            throw new ResponseError(400, "Username or password is wrong");
+
+        const isPasswordValid = await bcrypt.compare(
+            loginRequest.password,
+            user.password
+        );
+
+        if (!isPasswordValid)
+            throw new ResponseError(400, "Username or password is wrong");
+
+        if (!user.email_verified_at)
+            throw new ResponseError(401, "Your account not verified");
+
+        const loginResponse = toLoginResponse(user);
+
+        const accessToken = generateAccessToken(loginResponse);
+        const refreshToken = generateRefreshToken(loginResponse);
+
+        return toUserResponseWithToken(user, accessToken, refreshToken);
     }
 
     static async verifyEmail(token: string | null | undefined) {

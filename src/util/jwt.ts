@@ -1,23 +1,26 @@
 import "dotenv/config";
 import jsonWebToken from "jsonwebtoken";
-import { UserResponse } from "../model/user.model";
+import { LoginResponse } from "../model/user.model";
 
-export const generateAccessToken = (user: UserResponse): string => {
+export const generateAccessToken = (user: LoginResponse): string => {
     return jsonWebToken.sign(user, process.env.JWT_SECRET ?? "defaultSecret", {
-        expiresIn: "1800s" // Gunakan default 1800s jika tidak diatur
+        expiresIn: "3h" // Gunakan default 1800s jika tidak diatur
     });
 };
 
-export const generateRefreshToken = (user: UserResponse): string => {
-    return jsonWebToken.sign(user, String(process.env.JWT_REFRESH_SECRET), {
-        expiresIn: "1800s"
+export const generateRefreshToken = (user: LoginResponse): string => {
+    const now = Math.floor(Date.now() / 1000); // Waktu saat ini dalam detik
+    const oneMonthInSeconds = 30 * 24 * 60 * 60; // 30 hari x 24 jam x 60 menit x 60 detik
+    const expiresIn = now + oneMonthInSeconds;
+    return jsonWebToken.sign(user, String(process.env.JWT_REFRESH_SECRET!), {
+        expiresIn: expiresIn
     });
 };
 
 export const verifyRefreshToken = (
     token: string
 ): string | jsonWebToken.JwtPayload => {
-    return jsonWebToken.verify(token, String(process.env.JWT_REFRESH_SECRET));
+    return jsonWebToken.verify(token, String(process.env.JWT_REFRESH_SECRET!));
 };
 
 export const parseJWT = (token: string) => {

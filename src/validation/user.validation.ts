@@ -18,4 +18,9 @@ export class UserValidation {
             message: "Password must be at least 8 characters long",
             path: ["password"]
         });
+
+    static readonly LOGIN: ZodType = z.object({
+        email: z.string().email(),
+        password: z.string().min(1)
+    });
 }

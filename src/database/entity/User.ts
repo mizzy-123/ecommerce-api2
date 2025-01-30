@@ -52,8 +52,7 @@ export class User {
     @Column({
         type: "varchar",
         length: 100,
-        nullable: true,
-        unique: true
+        nullable: true
     })
     phone: string;
 
@@ -75,12 +74,12 @@ export class User {
         type: "timestamp",
         nullable: true
     })
-    email_verified_at: Date;
+    email_verified_at: Date | null;
 
     @Column({ type: "timestamp", nullable: true })
     verificationTokenExpires: Date | null;
 
-    @Column({ nullable: true })
+    @Column({ type: "varchar", nullable: true })
     verificationToken: string | null;
 
     @CreateDateColumn({ type: "timestamp" })

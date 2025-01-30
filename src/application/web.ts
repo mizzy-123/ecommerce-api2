@@ -21,5 +21,5 @@ web.options("*", cors());
 web.use(express.json());
 web.use(express.urlencoded({ extended: true }));
 web.use(appRouter);
-web.use(errorMiddleware);
 web.use(notFoundMiddleware);
+web.use(errorMiddleware);
