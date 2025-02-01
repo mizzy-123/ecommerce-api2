@@ -2,25 +2,28 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    ManyToMany,
+    JoinColumn,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
-import { User } from "./User";
+import { Product } from "./Product";
 
 @Entity()
-export class Role {
+export class RatingProduct {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToMany(() => User, (user) => user.roles, { onDelete: "CASCADE" })
-    users: User[];
+    @OneToOne(() => Product, (product) => product.ratingProduct)
+    @JoinColumn({ name: "product_id" })
+    product: Product;
+    @Column()
+    product_id: number;
 
     @Column({
-        type: "varchar",
-        length: 100
+        type: "decimal"
     })
-    name: string;
+    rating: number;
 
     @CreateDateColumn({ type: "timestamp" })
     created_at: Date;

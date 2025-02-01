@@ -2,19 +2,19 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    ManyToMany,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
-import { User } from "./User";
+import { Product } from "./Product";
 
 @Entity()
-export class Role {
+export class CategoryProduct {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToMany(() => User, (user) => user.roles, { onDelete: "CASCADE" })
-    users: User[];
+    @OneToMany(() => Product, (product) => product.category_product)
+    products: Product[];
 
     @Column({
         type: "varchar",

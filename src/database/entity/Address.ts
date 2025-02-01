@@ -14,6 +14,10 @@ export class Address {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
+    @ManyToOne(() => User, (user) => user.addresses)
+    @JoinColumn({ name: "user_id" })
+    user: User;
+
     @Column({
         type: "varchar",
         length: 100,
@@ -70,8 +74,4 @@ export class Address {
 
     @UpdateDateColumn({ type: "timestamp" })
     updated_at: Date;
-
-    @ManyToOne(() => User, (user) => user.addresses, { onDelete: "CASCADE" })
-    @JoinColumn({ name: "user_id" })
-    user: User;
 }

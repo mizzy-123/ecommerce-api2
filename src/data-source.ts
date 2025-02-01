@@ -3,6 +3,14 @@ import { DataSource } from "typeorm";
 import { User } from "./database/entity/User";
 import { Address } from "./database/entity/Address";
 import { Role } from "./database/entity/Role";
+import { Product } from "./database/entity/Product";
+import { ProductStock } from "./database/entity/ProductStock";
+import { Variation } from "./database/entity/Variation";
+import { VariationItem } from "./database/entity/VariationItem";
+import { VariationItemStock } from "./database/entity/VariationItemStock";
+import { RatingProduct } from "./database/entity/RatingProduct";
+import { CategoryProduct } from "./database/entity/CategoryProduct";
+import { GalleryProduct } from "./database/entity/GalleryProduct";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -13,7 +21,19 @@ export const AppDataSource = new DataSource({
     database: "ecommerce3",
     synchronize: true,
     logging: false,
-    entities: [User, Address, Role],
+    entities: [
+        User,
+        Address,
+        Role,
+        Product,
+        ProductStock,
+        Variation,
+        VariationItem,
+        VariationItemStock,
+        RatingProduct,
+        CategoryProduct,
+        GalleryProduct
+    ],
     migrations: ["src/migration/**/*.ts"],
     subscribers: []
 });

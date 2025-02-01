@@ -23,6 +23,25 @@ export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
+    @OneToMany(() => Address, (address) => address.user, {
+        onDelete: "CASCADE"
+    })
+    addresses: Address[];
+
+    @ManyToMany(() => Role, (role) => role.users, { onDelete: "CASCADE" })
+    @JoinTable({
+        name: "user_role",
+        joinColumn: {
+            name: "user_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "role_id",
+            referencedColumnName: "id"
+        }
+    })
+    roles: Role[];
+
     @Column({
         type: "varchar",
         length: 100,
@@ -87,13 +106,6 @@ export class User {
 
     @UpdateDateColumn({ type: "timestamp" })
     updated_at: Date;
-
-    @OneToMany(() => Address, (address) => address.user, { cascade: true })
-    addresses: Address[];
-
-    @ManyToMany(() => Role, (role) => role.users)
-    @JoinTable()
-    roles: Role[];
 
     @BeforeInsert()
     generateSlug() {
