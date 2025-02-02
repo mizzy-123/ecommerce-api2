@@ -3,8 +3,8 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
+    ManyToOne,
     OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
@@ -16,7 +16,7 @@ export class VariationItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => Variation, (variation) => variation.variation_items)
+    @ManyToOne(() => Variation, (variation) => variation.variation_items)
     @JoinColumn({ name: "variation_id" })
     variation: Variation;
     @Column()
@@ -42,8 +42,11 @@ export class VariationItem {
     })
     name: string;
 
-    @Column()
-    image_url: string;
+    @Column({
+        type: "varchar",
+        nullable: true
+    })
+    image_url: string | null;
 
     @CreateDateColumn({ type: "timestamp" })
     created_at: Date;

@@ -7,14 +7,19 @@ export const CategoryProductSeeder = async () => {
 
         const category: Partial<CategoryProduct>[] = [
             {
-                name: "Manik"
+                name: "Souvenir"
             },
             {
                 name: "Gantungan"
+            },
+            {
+                name: "Baju"
             }
         ];
 
         await categoryProduct.insert(category);
+
+        console.log("Category Product seeding completed!");
     } catch (error) {
         if (error instanceof Error) {
             console.error("Error in CategoryProductSeeder:", error.message);

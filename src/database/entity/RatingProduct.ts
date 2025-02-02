@@ -21,7 +21,8 @@ export class RatingProduct {
     product_id: number;
 
     @Column({
-        type: "decimal"
+        type: "decimal",
+        default: 0
     })
     rating: number;
 

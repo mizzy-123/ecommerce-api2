@@ -19,12 +19,13 @@ export class GalleryProduct {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Product, (product) => product.galleryProduct)
+    @ManyToOne(() => Product, (product) => product.galleryProducts)
     @JoinColumn({ name: "product_id" })
     product: Product;
 
     @Column({
         type: "enum",
+        enum: GalleryProductType,
         default: GalleryProductType.IMAGE
     })
     type: GalleryProductType;

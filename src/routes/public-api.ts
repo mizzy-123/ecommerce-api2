@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UserController } from "../controller/user.controller";
+import { ProductController } from "../controller/product.controller";
 
 export const publicRouter = Router();
 
@@ -10,3 +11,4 @@ publicRouter.post(
     "/resend-verification",
     UserController.resendVerificationEmail
 );
+publicRouter.get("/product", ProductController.show);

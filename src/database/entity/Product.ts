@@ -1,4 +1,6 @@
 import {
+    AfterInsert,
+    BeforeInsert,
     Column,
     CreateDateColumn,
     Entity,
@@ -16,6 +18,7 @@ import { ProductStock } from "./ProductStock";
 import { RatingProduct } from "./RatingProduct";
 import { GalleryProduct } from "./GalleryProduct";
 import { CategoryProduct } from "./CategoryProduct";
+import { Slug } from "../../util/slug";
 
 export enum StatusProduct {
     TERSEDIA = "tersedia",
@@ -42,7 +45,7 @@ export class Product {
         (galleryProduct) => galleryProduct.product,
         { onDelete: "CASCADE" }
     )
-    galleryProduct: GalleryProduct[];
+    galleryProducts: GalleryProduct[];
 
     @OneToOne(() => RatingProduct, (ratingProduct) => ratingProduct.product, {
         onDelete: "CASCADE"
@@ -78,6 +81,7 @@ export class Product {
 
     @Column({
         type: "enum",
+        enum: StatusProduct,
         default: StatusProduct.TERSEDIA
     })
     status_product: StatusProduct;
@@ -103,7 +107,9 @@ export class Product {
     })
     description: string;
 
-    @Column()
+    @Column({
+        default: 0
+    })
     sold_quantity: number;
 
     @Column()
@@ -114,4 +120,14 @@ export class Product {
 
     @UpdateDateColumn({ type: "timestamp" })
     updated_at: Date;
+
+    @BeforeInsert()
+    @AfterInsert()
+    generateSlug() {
+        if (this.name) {
+            return Slug.createSlugProduct(this.name).then((slug) => {
+                this.slug = slug;
+            });
+        }
+    }
 }

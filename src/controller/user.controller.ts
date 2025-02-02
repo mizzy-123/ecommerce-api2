@@ -3,6 +3,14 @@ import { CreateUserRequest, LoginRequest } from "../model/user.model";
 import { UserService } from "../service/user.service";
 
 export class UserController {
+    // static async refreshToken(req: Request, res: Response, next: NextFunction){
+    //     try {
+    //         const request =
+    //     } catch (error) {
+    //         next(error)
+    //     }
+    // }
+
     static async register(req: Request, res: Response, next: NextFunction) {
         try {
             const request: CreateUserRequest = req.body as CreateUserRequest;
