@@ -3,13 +3,18 @@ import { CreateUserRequest, LoginRequest } from "../model/user.model";
 import { UserService } from "../service/user.service";
 
 export class UserController {
-    // static async refreshToken(req: Request, res: Response, next: NextFunction){
-    //     try {
-    //         const request =
-    //     } catch (error) {
-    //         next(error)
-    //     }
-    // }
+    static async refreshToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            const response = await UserService.refreshToken(req);
+            res.status(200).json({
+                code: 200,
+                message: "Refresh token successfull",
+                data: response
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 
     static async register(req: Request, res: Response, next: NextFunction) {
         try {
@@ -32,7 +37,7 @@ export class UserController {
             const request: LoginRequest = req.body as LoginRequest;
             const response = await UserService.login(request);
 
-            res.status(201).json({
+            res.status(200).json({
                 code: 200,
                 message: "Login successfull",
                 data: response

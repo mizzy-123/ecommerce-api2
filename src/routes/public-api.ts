@@ -12,3 +12,4 @@ publicRouter.post(
     UserController.resendVerificationEmail
 );
 publicRouter.get("/product", ProductController.show);
+publicRouter.get("/refresh-token/:token", UserController.refreshToken);

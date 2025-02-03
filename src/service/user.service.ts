@@ -17,9 +17,41 @@ import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { Email } from "../util/email";
 import { ResponseError } from "../error/response.error";
-import { generateAccessToken, generateRefreshToken } from "../util/jwt";
+import {
+    generateAccessToken,
+    generateRefreshToken,
+    verifyAcessToken
+} from "../util/jwt";
+import { Request } from "express";
 
 export class UserService {
+    static async refreshToken(req: Request): Promise<UserResponseWithToken> {
+        const token = req.params.token;
+
+        if (!token) {
+            throw new ResponseError(400, "Invalid or missing token");
+        }
+
+        const user = verifyAcessToken(String(token));
+
+        if (user === null || user === undefined)
+            throw new ResponseError(401, "Unauthorized");
+
+        const getUser = user as UserResponse;
+
+        const userRepository = AppDataSource.getRepository(User);
+        const userData = await userRepository.findOneBy({ id: getUser.id });
+
+        if (!userData) throw new ResponseError(404, "User notfound");
+
+        const loginResponse = toLoginResponse(userData);
+
+        const accessToken = generateAccessToken(loginResponse);
+        const refreshToken = generateRefreshToken(loginResponse);
+
+        return toUserResponseWithToken(userData, accessToken, refreshToken);
+    }
+
     static async register(request: CreateUserRequest): Promise<UserResponse> {
         const registerRequest = Validation.validate(
             UserValidation.REGISTER,

@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { AuthRequest } from "../request/auth.request";
-import { verifyRefreshToken } from "../util/jwt";
+import { verifyAcessToken } from "../util/jwt";
 import { UserResponse } from "../model/user.model";
 
 export const authMiddleware = (
@@ -17,7 +17,7 @@ export const authMiddleware = (
         return;
     }
 
-    const user = verifyRefreshToken(String(token));
+    const user = verifyAcessToken(String(token));
 
     if (
         bearer === undefined ||

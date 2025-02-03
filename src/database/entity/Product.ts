@@ -19,6 +19,7 @@ import { RatingProduct } from "./RatingProduct";
 import { GalleryProduct } from "./GalleryProduct";
 import { CategoryProduct } from "./CategoryProduct";
 import { Slug } from "../../util/slug";
+import { Ulasan } from "./Ulasan";
 
 export enum StatusProduct {
     TERSEDIA = "tersedia",
@@ -30,6 +31,11 @@ export enum StatusProduct {
 export class Product {
     @PrimaryGeneratedColumn("uuid")
     id: string;
+
+    @OneToMany(() => Ulasan, (ulasan) => ulasan.product, {
+        onDelete: "CASCADE"
+    })
+    ulasans: Ulasan[];
 
     @ManyToOne(
         () => CategoryProduct,

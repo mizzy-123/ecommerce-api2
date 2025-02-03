@@ -12,6 +12,7 @@ import {
 import { Address } from "./Address";
 import { Role } from "./Role";
 import { Slug } from "../../util/slug";
+import { Ulasan } from "./Ulasan";
 
 export enum Gender {
     LAKI = "laki",
@@ -22,6 +23,11 @@ export enum Gender {
 export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
+
+    @OneToMany(() => Ulasan, (ulasan) => ulasan.user, {
+        onDelete: "CASCADE"
+    })
+    ulasans: Ulasan[];
 
     @OneToMany(() => Address, (address) => address.user, {
         onDelete: "CASCADE"
