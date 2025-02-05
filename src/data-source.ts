@@ -13,6 +13,8 @@ import { CategoryProduct } from "./database/entity/CategoryProduct";
 import { GalleryProduct } from "./database/entity/GalleryProduct";
 import { Ulasan } from "./database/entity/Ulasan";
 import { MediaUlasan } from "./database/entity/MediaUlasan";
+import { UlasanVariationItem } from "./database/entity/UlasanVariationItem";
+import { UlasanLike } from "./database/entity/UlasanLike";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -36,7 +38,9 @@ export const AppDataSource = new DataSource({
         CategoryProduct,
         GalleryProduct,
         Ulasan,
-        MediaUlasan
+        MediaUlasan,
+        UlasanVariationItem,
+        UlasanLike
     ],
     migrations: ["src/migration/**/*.ts"],
     subscribers: []

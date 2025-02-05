@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { UserController } from "../controller/user.controller";
 import { ProductController } from "../controller/product.controller";
+import { UlasanController } from "../controller/ulasan.controller";
 
 export const publicRouter = Router();
 
@@ -13,3 +14,6 @@ publicRouter.post(
 );
 publicRouter.get("/product", ProductController.show);
 publicRouter.get("/refresh-token/:token", UserController.refreshToken);
+
+// Ulasan
+publicRouter.get("/ulasan/product/:productId", UlasanController.showAll);

@@ -11,11 +11,25 @@ import {
 import { User } from "./User";
 import { Product } from "./Product";
 import { MediaUlasan } from "./MediaUlasan";
+import { UlasanVariationItem } from "./UlasanVariationItem";
+import { UlasanLike } from "./UlasanLike";
 
 @Entity()
 export class Ulasan {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @OneToMany(() => UlasanLike, (ulasanLike) => ulasanLike.ulasan, {
+        onDelete: "CASCADE"
+    })
+    ulasan_likes: UlasanLike[];
+
+    @OneToMany(
+        () => UlasanVariationItem,
+        (ulasanVariationItem) => ulasanVariationItem.ulasan,
+        { onDelete: "CASCADE" }
+    )
+    ulasan_variation_items: UlasanVariationItem[];
 
     @OneToMany(() => MediaUlasan, (mediaUlasan) => mediaUlasan.ulasan, {
         onDelete: "CASCADE"

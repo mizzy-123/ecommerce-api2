@@ -7,10 +7,12 @@ import { Variation } from "../entity/Variation";
 import { VariationItem } from "../entity/VariationItem";
 import { VariationItemStock } from "../entity/VariationItemStock";
 
-export const productSeeder = async () => {
+export const ProductSeeder = async () => {
     try {
         await dummyVariationSatuItem();
         await dummyVariationDuaItem();
+
+        console.log("Product seeding completed!");
     } catch (error) {
         if (error instanceof Error) {
             console.error("Error in productSeeder:", error.message);
@@ -359,8 +361,6 @@ async function dummyVariationSatuItem() {
             }
         }
     }
-
-    console.log("Product seeding completed!");
 }
 
 function getRandomPrice(min: number, max: number): number {

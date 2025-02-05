@@ -17,6 +17,8 @@ export const RatingProductSeeder = async () => {
 
             await ratingProductRepo.save(ratingProduct);
         }
+
+        console.log("RatingProduct seeding completed!");
     } catch (error) {
         if (error instanceof Error) {
             console.error("Error in productSeeder:", error.message);

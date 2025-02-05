@@ -19,7 +19,10 @@ export class VariationItemStock {
         () => ProductStock,
         (productStock) => productStock.variation_item_stocks
     )
+    @JoinColumn({ name: "product_stock_id" })
     product_stock: ProductStock;
+    @Column()
+    product_stock_id: number;
 
     @ManyToOne(
         () => VariationItem,
@@ -27,7 +30,7 @@ export class VariationItemStock {
     )
     @JoinColumn({ name: "variation_item_id_1" })
     variation_item_1: VariationItem;
-    @Column({ nullable: true })
+    @Column()
     variation_item_id_1: number;
 
     @ManyToOne(

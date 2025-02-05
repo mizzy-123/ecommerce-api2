@@ -19,6 +19,8 @@ export class ProductStock {
     @ManyToOne(() => Product, (product) => product.productStocks)
     @JoinColumn({ name: "product_id" })
     product: Product;
+    @Column()
+    product_id: string;
 
     @OneToMany(
         () => VariationItemStock,

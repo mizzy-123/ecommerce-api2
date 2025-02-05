@@ -10,11 +10,19 @@ import {
 } from "typeorm";
 import { Variation } from "./Variation";
 import { VariationItemStock } from "./VariationItemStock";
+import { UlasanVariationItem } from "./UlasanVariationItem";
 
 @Entity()
 export class VariationItem {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @OneToMany(
+        () => UlasanVariationItem,
+        (ulasanVariationItem) => ulasanVariationItem.ulasan,
+        { onDelete: "CASCADE" }
+    )
+    ulasan_variation_items: UlasanVariationItem[];
 
     @ManyToOne(() => Variation, (variation) => variation.variation_items)
     @JoinColumn({ name: "variation_id" })
