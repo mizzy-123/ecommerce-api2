@@ -3,6 +3,7 @@ import { GalleryProduct } from "../database/entity/GalleryProduct";
 import { Product } from "../database/entity/Product";
 import { ProductStock } from "../database/entity/ProductStock";
 import { RatingProduct } from "../database/entity/RatingProduct";
+import { Variation } from "../database/entity/Variation";
 
 export type GetProductResponse = {
     data: DataProduct[];
@@ -30,7 +31,7 @@ export type DataProduct = {
     category_product: CategoryProduct;
     gallery_product: GalleryProduct;
     rating_product: RatingProduct;
-    product_stocks: ProductStock;
+    product_stock: ProductStock;
 };
 
 export function toGetProductResponse(
@@ -58,22 +59,81 @@ export function toDataProduct(product: Product[]): DataProduct[] {
         return {
             id: v.id,
             category_product_id: v.category_product_id,
-            category_product: v.category_product,
-            created_at: v.created_at,
-            description: v.description,
-            gallery_product: v.galleryProducts[0],
-            material: v.material,
             name: v.name,
-            product_stocks: productStock[0],
-            publish: v.publish,
-            rating_product: v.ratingProduct,
-            slug: v.slug,
-            sold_quantity: v.sold_quantity,
             status_product: v.status_product,
+            slug: v.slug,
+            weight: v.weight,
+            material: v.material,
+            description: v.description,
+            sold_quantity: v.sold_quantity,
+            publish: v.publish,
+            created_at: v.created_at,
             updated_at: v.updated_at,
-            weight: v.weight
+            category_product: v.category_product,
+            gallery_product: v.galleryProducts[0],
+            rating_product: v.ratingProduct,
+            product_stock: productStock[0]
         };
     });
 
     return dataProduct;
 }
+
+/* ========== Detail product ============= */
+
+export type GetDetailProductResponse = {
+    id: string;
+    category_product_id: number;
+    name: string;
+    status_product: string;
+    slug: string;
+    weight: number;
+    material: string | null;
+    description: string;
+    sold_quantity: number;
+    publish: boolean;
+    created_at: Date;
+    updated_at: Date;
+    category_product: CategoryProduct;
+    gallery_product: GalleryProduct[];
+    rating_product: RatingProduct;
+    product_stock: ProductStock;
+    variations: Variation[];
+};
+
+export function toDetailDataProduct(
+    p: Product | null
+): GetDetailProductResponse | null {
+    if (!p) return null;
+
+    const productStock = p.productStocks;
+    productStock.sort((a, b) => a.price_sell - b.price_sell);
+
+    // Kembalikan objek dengan urutan sesuai GetDetailProductResponse
+    return {
+        id: p.id,
+        category_product_id: p.category_product_id,
+        name: p.name,
+        status_product: p.status_product,
+        slug: p.slug,
+        weight: p.weight,
+        material: p.material,
+        description: p.description,
+        sold_quantity: p.sold_quantity,
+        publish: p.publish,
+        created_at: p.created_at,
+        updated_at: p.updated_at,
+        category_product: p.category_product,
+        gallery_product: p.galleryProducts,
+        rating_product: p.ratingProduct,
+        product_stock: productStock[0], // Ambil product_stock dengan harga terendah
+        variations: p.variations
+    };
+}
+
+/* ========== Product Stock ============= */
+
+export type ShowProductStockRequest = {
+    variation_item_id_1: number | null;
+    variation_item_id_2: number | null;
+};
