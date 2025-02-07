@@ -27,6 +27,11 @@ export enum StatusProduct {
     HABIS = "habis"
 }
 
+export enum Kelangkaan {
+    KHUSUS = "I",
+    TIDAK = "O"
+}
+
 @Entity()
 export class Product {
     @PrimaryGeneratedColumn("uuid")
@@ -93,6 +98,13 @@ export class Product {
     status_product: StatusProduct;
 
     @Column({
+        type: "enum",
+        enum: Kelangkaan,
+        default: Kelangkaan.TIDAK
+    })
+    kelangkaan: Kelangkaan;
+
+    @Column({
         type: "varchar",
         length: 100
     })
@@ -106,7 +118,7 @@ export class Product {
         length: 100,
         nullable: true
     })
-    material: string | null;
+    tahun_produksi: string;
 
     @Column({
         type: "text"

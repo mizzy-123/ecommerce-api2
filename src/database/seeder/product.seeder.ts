@@ -35,7 +35,7 @@ async function dummyVariationDuaItem() {
     const productsData = [
         {
             name: "Baju freya wangi",
-            material: "Kain",
+            tahun: "2025",
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 100,
             description: "Naju tanda tangan asli dari freya",
@@ -53,7 +53,7 @@ async function dummyVariationDuaItem() {
         },
         {
             name: "Baju JKT 48",
-            material: "Kain",
+            tahun: "2025",
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Naju hangat untuk penggemar JKT 48",
@@ -71,7 +71,7 @@ async function dummyVariationDuaItem() {
         },
         {
             name: "Baju AKB 48",
-            material: "Kain",
+            tahun: "2025",
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Naju hangat untuk penggemar AKB 48",
@@ -89,7 +89,7 @@ async function dummyVariationDuaItem() {
         },
         {
             name: "Baju SNH 48",
-            material: "Kain",
+            tahun: "2025",
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Naju hangat untuk penggemar SNH 48",
@@ -115,7 +115,7 @@ async function dummyVariationDuaItem() {
         // Buat produk
         const product = productRepo.create({
             status_product: StatusProduct.TERSEDIA,
-            material: productData.material,
+            tahun_produksi: productData.tahun,
             name: productData.name,
             category_product: categories[productData.categoryIndex], // Gunakan index kategori
             weight: productData.weight,
@@ -219,7 +219,7 @@ async function dummyVariationSatuItem() {
     const productsData = [
         {
             name: "Gantungan Kunci JKT",
-            material: "Plastik",
+            tahun: "2025",
             categoryIndex: 1, // Index kategori (0, 1, 2, dst.)
             weight: 100,
             description: "Gantungan kunci satupaket JKT 48",
@@ -233,7 +233,7 @@ async function dummyVariationSatuItem() {
         },
         {
             name: "Kunci souvenir1",
-            material: "Plastik",
+            tahun: "2025",
             categoryIndex: 0, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Tas jinjing dengan bahan berkualitas tinggi",
@@ -247,7 +247,7 @@ async function dummyVariationSatuItem() {
         },
         {
             name: "Kunci souvenir2",
-            material: "Plastik",
+            tahun: "2025",
             categoryIndex: 0, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Tas jinjing dengan bahan berkualitas tinggi",
@@ -261,7 +261,7 @@ async function dummyVariationSatuItem() {
         },
         {
             name: "Kunci souvenir3",
-            material: "Plastik",
+            tahun: "2025",
             categoryIndex: 0, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Tas jinjing dengan bahan berkualitas tinggi",
@@ -275,7 +275,7 @@ async function dummyVariationSatuItem() {
         },
         {
             name: "Gantungan Kunci AKB",
-            material: "Plastik",
+            tahun: "2025",
             categoryIndex: 1, // Index kategori (0, 1, 2, dst.)
             weight: 100,
             description: "Gantungan kunci satupaket AKB 48",
@@ -298,7 +298,7 @@ async function dummyVariationSatuItem() {
         // Buat produk
         const product = productRepo.create({
             status_product: StatusProduct.TERSEDIA,
-            material: productData.material,
+            tahun_produksi: productData.tahun,
             name: productData.name,
             category_product: categories[productData.categoryIndex], // Gunakan index kategori
             weight: productData.weight,

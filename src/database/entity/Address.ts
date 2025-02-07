@@ -4,19 +4,26 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import { User } from "./User";
+import { AddressApi } from "./AddressApi";
 
 @Entity()
 export class Address {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
+    @OneToOne(() => AddressApi, (addressApi) => addressApi.address)
+    address_api: AddressApi;
+
     @ManyToOne(() => User, (user) => user.addresses)
     @JoinColumn({ name: "user_id" })
     user: User;
+    @Column()
+    user_id: string;
 
     @Column({
         type: "varchar",
@@ -30,38 +37,43 @@ export class Address {
         length: 100,
         nullable: true
     })
-    phone: string;
+    phone: string | null;
 
     @Column({
+        type: "varchar",
         nullable: true
     })
-    province: string;
+    province: string | null;
 
     @Column({
+        type: "varchar",
         nullable: true
     })
-    city: string;
+    city: string | null;
 
     @Column({
+        type: "varchar",
         nullable: true
     })
-    subdistrict: string;
+    subdistrict: string | null;
 
     @Column({
+        type: "varchar",
         nullable: true
     })
-    postal_code: string;
+    postal_code: string | null;
 
     @Column({
+        type: "varchar",
         nullable: true
     })
-    street: string;
+    street: string | null;
 
     @Column({
         type: "text",
         nullable: true
     })
-    instructions: string;
+    instructions: string | null;
 
     @Column({
         type: "boolean",

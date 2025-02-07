@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
+import { UserController } from "../controller/user.controller";
 
 export const apiRouter = Router();
 
@@ -11,3 +12,5 @@ apiRouter.get("/test", (req: Request, res: Response, next: NextFunction) => {
         next(error);
     }
 });
+
+apiRouter.post("/address", UserController.addAddress);

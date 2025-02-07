@@ -1,8 +1,32 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateUserRequest, LoginRequest } from "../model/user.model";
+import {
+    AddAddressRequest,
+    CreateUserRequest,
+    LoginRequest
+} from "../model/user.model";
 import { UserService } from "../service/user.service";
+import { AuthRequest } from "../request/auth.request";
 
 export class UserController {
+    static async addAddress(
+        req: AuthRequest,
+        res: Response,
+        next: NextFunction
+    ) {
+        try {
+            const request: AddAddressRequest = req.body as AddAddressRequest;
+            const response = await UserService.addAdress(request, req.user!);
+
+            res.status(201).json({
+                code: 201,
+                message: "Address has been created",
+                data: response
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static async refreshToken(req: Request, res: Response, next: NextFunction) {
         try {
             const response = await UserService.refreshToken(req);

@@ -22,7 +22,7 @@ export type DataProduct = {
     status_product: string;
     slug: string;
     weight: number;
-    material: string | null;
+    tahun_produksi: string | null;
     description: string;
     sold_quantity: number;
     publish: boolean;
@@ -63,7 +63,7 @@ export function toDataProduct(product: Product[]): DataProduct[] {
             status_product: v.status_product,
             slug: v.slug,
             weight: v.weight,
-            material: v.material,
+            tahun_produksi: v.tahun_produksi,
             description: v.description,
             sold_quantity: v.sold_quantity,
             publish: v.publish,
@@ -88,7 +88,7 @@ export type GetDetailProductResponse = {
     status_product: string;
     slug: string;
     weight: number;
-    material: string | null;
+    tahun_produksi: string | null;
     description: string;
     sold_quantity: number;
     publish: boolean;
@@ -117,7 +117,7 @@ export function toDetailDataProduct(
         status_product: p.status_product,
         slug: p.slug,
         weight: p.weight,
-        material: p.material,
+        tahun_produksi: p.tahun_produksi,
         description: p.description,
         sold_quantity: p.sold_quantity,
         publish: p.publish,

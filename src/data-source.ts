@@ -15,6 +15,7 @@ import { Ulasan } from "./database/entity/Ulasan";
 import { MediaUlasan } from "./database/entity/MediaUlasan";
 import { UlasanVariationItem } from "./database/entity/UlasanVariationItem";
 import { UlasanLike } from "./database/entity/UlasanLike";
+import { AddressApi } from "./database/entity/AddressApi";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -28,6 +29,7 @@ export const AppDataSource = new DataSource({
     entities: [
         User,
         Address,
+        AddressApi,
         Role,
         Product,
         ProductStock,

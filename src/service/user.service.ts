@@ -3,6 +3,7 @@ import { AppDataSource } from "../data-source";
 import { Role } from "../database/entity/Role";
 import { User } from "../database/entity/User";
 import {
+    AddAddressRequest,
     CreateUserRequest,
     LoginRequest,
     toLoginResponse,
@@ -23,8 +24,52 @@ import {
     verifyAcessToken
 } from "../util/jwt";
 import { Request } from "express";
+import { Address } from "../database/entity/Address";
+import { AddressApi } from "../database/entity/AddressApi";
 
 export class UserService {
+    static async addAdress(
+        request: AddAddressRequest,
+        user: UserResponse
+    ): Promise<Address> {
+        const validate = Validation.validate(
+            UserValidation.ADD_ADDRESS,
+            request
+        );
+
+        const addressRepo = AppDataSource.getRepository(Address);
+        await addressRepo
+            .createQueryBuilder()
+            .update(Address)
+            .set({ use: false })
+            .execute();
+
+        const addAddress = addressRepo.create({
+            city: validate.city,
+            fullname: validate.fullname,
+            instructions: validate.instructions,
+            phone: validate.phone,
+            postal_code: validate.postal_code,
+            province: validate.province,
+            street: validate.street,
+            subdistrict: validate.subdistrict,
+            use: true,
+            user_id: user.id
+        });
+
+        const returnAddress = await addressRepo.save(addAddress);
+
+        const addressApiRepo = AppDataSource.getRepository(AddressApi);
+        addressApiRepo.insert({
+            address: returnAddress,
+            city_id: validate.city_id,
+            province_id: validate.province_id,
+            subdistrict_id: validate.subdistrict_id
+        });
+
+        return returnAddress;
+    }
+
     static async refreshToken(req: Request): Promise<UserResponseWithToken> {
         const token = req.params.token;
 

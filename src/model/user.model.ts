@@ -75,3 +75,19 @@ export function toUserResponse(user: User): UserResponse {
         phone: user.phone
     };
 }
+
+/* ====== Address ===== */
+
+export type AddAddressRequest = {
+    fullname: string;
+    phone: string;
+    province: string;
+    city: string | undefined;
+    subdistrict: string | null | undefined;
+    postal_code: string | null | undefined;
+    street: string | null | undefined;
+    instructions: string | null | undefined;
+    province_id: number | null | undefined;
+    subdistrict_id: number | null | undefined;
+    city_id: number | null | undefined;
+};

@@ -1,6 +1,20 @@
 import { z, ZodType } from "zod";
 
 export class UserValidation {
+    static readonly ADD_ADDRESS: ZodType = z.object({
+        fullname: z.string().min(1).max(100),
+        phone: z.string().min(1).max(100),
+        province: z.string().min(1).max(100).nullish(),
+        city: z.string().min(1).max(100).nullish(),
+        subdistrict: z.string().min(1).max(100).nullish(),
+        postal_code: z.string().min(1).max(100).nullish(),
+        street: z.string().min(1).nullish(),
+        instructions: z.string().min(1).nullish(),
+        province_id: z.number().nullish(),
+        subdistrict_id: z.number().nullish(),
+        city_id: z.number().nullish()
+    });
+
     static readonly REGISTER: ZodType = z
         .object({
             email: z.string().email(),
