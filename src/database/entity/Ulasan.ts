@@ -42,7 +42,7 @@ export class Ulasan {
     @Column({
         type: "uuid"
     })
-    product_id: string;
+    product_id: number;
 
     @ManyToOne(() => User, (user) => user.ulasans)
     @JoinColumn({ name: "user_id" })

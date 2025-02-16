@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Export PDF Produk</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                padding: 0;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: center;
+            }
+            th {
+                background-color: #f4f4f4;
+            }
+            img {
+                width: 100px;
+                height: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 style="text-align: center">Daftar Produk</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Produk</th>
+                    <th>Serial Number</th>
+                    <th>Kode QR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach(product => { %>
+                <tr>
+                    <td><%= product.name %></td>
+                    <td><%= product.serial_number %></td>
+                    <td><img src="<%= product.kode_qr %>" alt="QR Code" /></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </body>
+</html>

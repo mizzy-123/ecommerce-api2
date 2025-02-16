@@ -20,7 +20,7 @@ export class ProductStock {
     @JoinColumn({ name: "product_id" })
     product: Product;
     @Column()
-    product_id: string;
+    product_id: number;
 
     @OneToMany(
         () => VariationItemStock,

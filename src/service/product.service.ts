@@ -5,9 +5,11 @@ import { Brackets } from "typeorm";
 import {
     GetDetailProductResponse,
     GetProductResponse,
+    GetProductWithQr,
     ShowProductStockRequest,
     toDetailDataProduct,
-    toGetProductResponse
+    toGetProductResponse,
+    toGetProductWithQr
 } from "../model/product.model";
 import { ProductStock } from "../database/entity/ProductStock";
 import { ResponseError } from "../error/response.error";
@@ -16,6 +18,21 @@ import { Validation } from "../validation/validation";
 import { ProductValidation } from "../validation/product.validation";
 
 export class ProductService {
+    static async showProductWithQr(): Promise<GetProductWithQr[]> {
+        const productRepo = AppDataSource.getRepository(Product);
+
+        const getProduct = await productRepo
+            .createQueryBuilder("product")
+            .leftJoinAndSelect("product.type_product", "type_product")
+            .leftJoinAndSelect("product.category_product", "category_product")
+            .orderBy("product.id", "DESC")
+            .getMany();
+
+        const returnData = await toGetProductWithQr(getProduct);
+
+        return returnData;
+    }
+
     static async showProductStock(
         request: ShowProductStockRequest
     ): Promise<ProductStock | null> {

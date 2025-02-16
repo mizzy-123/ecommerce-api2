@@ -4,16 +4,20 @@ import { CategoryProduct } from "../entity/CategoryProduct";
 export const CategoryProductSeeder = async () => {
     try {
         const categoryProduct = AppDataSource.getRepository(CategoryProduct);
+        const alfabet = ["A", "B", "C", "D"];
 
         const category: Partial<CategoryProduct>[] = [
             {
-                name: "Souvenir"
+                name: "Souvenir",
+                code: alfabet[getRandomNumber(0, alfabet.length - 1)]
             },
             {
-                name: "Gantungan"
+                name: "Gantungan",
+                code: alfabet[getRandomNumber(0, alfabet.length - 1)]
             },
             {
-                name: "Baju"
+                name: "Baju",
+                code: alfabet[getRandomNumber(0, alfabet.length - 1)]
             }
         ];
 
@@ -28,3 +32,7 @@ export const CategoryProductSeeder = async () => {
         }
     }
 };
+
+function getRandomNumber(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

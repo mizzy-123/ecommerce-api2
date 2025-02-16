@@ -11,7 +11,7 @@ export type GetUlasanResponse = {
 
 export type DataUlasan = {
     id: number;
-    product_id: string;
+    product_id: number;
     user_id: string;
     ulasan: string;
     star: number;

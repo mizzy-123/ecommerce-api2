@@ -22,6 +22,12 @@ export class CategoryProduct {
     })
     name: string;
 
+    @Column({
+        type: "varchar",
+        length: 100
+    })
+    code: string;
+
     @CreateDateColumn({ type: "timestamp" })
     created_at: Date;
 

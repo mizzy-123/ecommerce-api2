@@ -20,6 +20,8 @@ import { GalleryProduct } from "./GalleryProduct";
 import { CategoryProduct } from "./CategoryProduct";
 import { Slug } from "../../util/slug";
 import { Ulasan } from "./Ulasan";
+import { TypeProduct } from "./TypeProduct";
+import { v4 as uuidv4 } from "uuid";
 
 export enum StatusProduct {
     TERSEDIA = "tersedia",
@@ -34,8 +36,17 @@ export enum Kelangkaan {
 
 @Entity()
 export class Product {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column({ type: "uuid", unique: true }) // Kolom uuid yang unik
+    uuid: string;
+
+    @ManyToOne(() => TypeProduct, (typeProduct) => typeProduct.products)
+    @JoinColumn({ name: "type_product_id" })
+    type_product: TypeProduct;
+    @Column()
+    type_product_id: number;
 
     @OneToMany(() => Ulasan, (ulasan) => ulasan.product, {
         onDelete: "CASCADE"
@@ -147,5 +158,10 @@ export class Product {
                 this.slug = slug;
             });
         }
+    }
+
+    @BeforeInsert()
+    async generateUUID() {
+        return (this.uuid = uuidv4());
     }
 }

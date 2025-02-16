@@ -3,6 +3,7 @@ import { CategoryProduct } from "../entity/CategoryProduct";
 import { GalleryProduct, GalleryProductType } from "../entity/GalleryProduct";
 import { Product, StatusProduct } from "../entity/Product";
 import { ProductStock } from "../entity/ProductStock";
+import { TypeProduct } from "../entity/TypeProduct";
 import { Variation } from "../entity/Variation";
 import { VariationItem } from "../entity/VariationItem";
 import { VariationItemStock } from "../entity/VariationItemStock";
@@ -32,10 +33,14 @@ async function dummyVariationDuaItem() {
     const variationItemStockRepo =
         AppDataSource.getRepository(VariationItemStock);
 
+    const typeProductRepo = AppDataSource.getRepository(TypeProduct);
+    const typeProductCount = await typeProductRepo.count();
+
     const productsData = [
         {
             name: "Baju freya wangi",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 100,
             description: "Naju tanda tangan asli dari freya",
@@ -54,6 +59,7 @@ async function dummyVariationDuaItem() {
         {
             name: "Baju JKT 48",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Naju hangat untuk penggemar JKT 48",
@@ -72,6 +78,7 @@ async function dummyVariationDuaItem() {
         {
             name: "Baju AKB 48",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Naju hangat untuk penggemar AKB 48",
@@ -90,6 +97,7 @@ async function dummyVariationDuaItem() {
         {
             name: "Baju SNH 48",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 2, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Naju hangat untuk penggemar SNH 48",
@@ -120,7 +128,9 @@ async function dummyVariationDuaItem() {
             category_product: categories[productData.categoryIndex], // Gunakan index kategori
             weight: productData.weight,
             description: productData.description,
-            publish: true
+            publish: true,
+            sold_quantity: getRandomQuantity(1, 20),
+            type_product_id: productData.type_product_id
         });
 
         const savedProduct = await productRepo.save(product);
@@ -206,6 +216,8 @@ async function dummyVariationSatuItem() {
     const variationItemRepo = AppDataSource.getRepository(VariationItem);
     const variationItemStockRepo =
         AppDataSource.getRepository(VariationItemStock);
+    const typeProductRepo = AppDataSource.getRepository(TypeProduct);
+    const typeProductCount = await typeProductRepo.count();
 
     // Hapus data sebelumnya
     // await variationItemStockRepo.delete({});
@@ -220,6 +232,7 @@ async function dummyVariationSatuItem() {
         {
             name: "Gantungan Kunci JKT",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 1, // Index kategori (0, 1, 2, dst.)
             weight: 100,
             description: "Gantungan kunci satupaket JKT 48",
@@ -234,6 +247,7 @@ async function dummyVariationSatuItem() {
         {
             name: "Kunci souvenir1",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 0, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Tas jinjing dengan bahan berkualitas tinggi",
@@ -248,6 +262,7 @@ async function dummyVariationSatuItem() {
         {
             name: "Kunci souvenir2",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 0, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Tas jinjing dengan bahan berkualitas tinggi",
@@ -262,6 +277,7 @@ async function dummyVariationSatuItem() {
         {
             name: "Kunci souvenir3",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 0, // Index kategori (0, 1, 2, dst.)
             weight: 150,
             description: "Tas jinjing dengan bahan berkualitas tinggi",
@@ -276,6 +292,7 @@ async function dummyVariationSatuItem() {
         {
             name: "Gantungan Kunci AKB",
             tahun: "2025",
+            type_product_id: getRandomNumber(1, typeProductCount),
             categoryIndex: 1, // Index kategori (0, 1, 2, dst.)
             weight: 100,
             description: "Gantungan kunci satupaket AKB 48",
@@ -304,7 +321,8 @@ async function dummyVariationSatuItem() {
             weight: productData.weight,
             description: productData.description,
             publish: true,
-            sold_quantity: getRandomQuantity(1, 20)
+            sold_quantity: getRandomQuantity(1, 20),
+            type_product_id: productData.type_product_id
         });
 
         const savedProduct = await productRepo.save(product);

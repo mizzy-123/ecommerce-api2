@@ -22,3 +22,7 @@ publicRouter.get("/product/:slug", ProductController.detail);
 
 // Ulasan
 publicRouter.get("/ulasan/product/:productId", UlasanController.showAll);
+publicRouter.get(
+    "/generate-productqr-pdf",
+    ProductController.exportProductQrPdf
+);

@@ -22,6 +22,8 @@ export class GalleryProduct {
     @ManyToOne(() => Product, (product) => product.galleryProducts)
     @JoinColumn({ name: "product_id" })
     product: Product;
+    @Column()
+    product_id: number;
 
     @Column({
         type: "enum",
